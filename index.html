@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project 2 — Evaluation Prep Guide (Team 42)</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#faf9f7;--bg2:#f0eeeb;--bg3:#e8e5e0;--fg:#1a1917;--fg2:#5c5a55;--fg3:#8a8780;--accent:#2d5bda;--accent-bg:#eaf0fc;--warn:#c47a1a;--warn-bg:#fef4e4;--success:#1a8a5c;--success-bg:#e6f7ef;--danger:#c0392b;--danger-bg:#fce8e6;--purple:#6c4bbd;--purple-bg:#f0ecfa;--border:#d8d5cf;--border2:#c4c0b8;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;--radius:8px}
+body{font-family:var(--sans);background:var(--bg);color:var(--fg);line-height:1.7;font-size:15px}
+.wrap{max-width:880px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1{font-size:28px;font-weight:600;margin-bottom:4px;letter-spacing:-0.5px}
+.subtitle{color:var(--fg2);font-size:15px;margin-bottom:2rem}
+h2{font-size:20px;font-weight:600;margin:2.5rem 0 0.75rem;padding-bottom:0.5rem;border-bottom:2px solid var(--border);letter-spacing:-0.3px}
+h3{font-size:16px;font-weight:600;margin:1.25rem 0 0.5rem}
+p,li{margin-bottom:0.4rem}
+ul,ol{padding-left:1.5rem}
+code{font-family:var(--mono);font-size:13px;background:var(--bg2);padding:1px 6px;border-radius:4px;word-break:break-word}
+pre{background:#1a1917;color:#e8e5e0;border-radius:var(--radius);padding:1rem;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.6;margin:0.75rem 0}
+.nav{position:sticky;top:0;background:var(--bg);z-index:10;padding:0.75rem 0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;display:flex;gap:6px;flex-wrap:wrap}
+.nav button{font-size:13px;padding:6px 14px;border-radius:var(--radius);border:1px solid var(--border);color:var(--fg2);background:transparent;cursor:pointer;transition:all 0.15s;font-family:var(--sans)}
+.nav button:hover{background:var(--bg2);color:var(--fg)}
+.nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.section{display:none}.section.active{display:block}
+.tag{font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500;white-space:nowrap;display:inline-block;vertical-align:middle;margin-left:6px}
+.tag-pattern{background:var(--accent-bg);color:var(--accent)}
+.tag-marks{background:var(--success-bg);color:var(--success)}
+.tag-warn{background:var(--warn-bg);color:var(--warn)}
+.callout{padding:0.7rem 1rem;margin:0.75rem 0;border-left:3px solid;border-radius:0 var(--radius) var(--radius) 0}
+.callout-info{border-color:var(--accent);background:var(--accent-bg)}
+.callout-warn{border-color:var(--warn);background:var(--warn-bg)}
+.callout-danger{border-color:var(--danger);background:var(--danger-bg)}
+.qa{background:var(--bg2);border-radius:var(--radius);padding:0.7rem 1rem;margin:0.6rem 0}
+.qa .q{font-weight:600;font-size:14px}
+.qa .a{color:var(--fg2);margin-top:0.3rem;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:0.5rem 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:var(--bg2);font-weight:600;font-size:13px}
+.vs{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:0.75rem 0}
+.vs table{margin:0}
+.vs th{background:var(--purple-bg);color:var(--purple)}
+.chosen{background:var(--success-bg)}
+.rejected{background:var(--danger-bg);color:var(--fg2)}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin:0.5rem 0}
+.pill{font-size:12px;padding:3px 10px;border-radius:4px;background:var(--bg2);color:var(--fg2);border:1px solid var(--border)}
+.arch-layer{display:flex;align-items:stretch;gap:8px;margin:6px 0;flex-wrap:wrap}
+.arch-node{border-radius:6px;padding:6px 12px;font-size:12px;font-family:var(--sans);text-align:center;border:1px solid}
+.arch-new{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.arch-old{background:var(--bg3);border-color:var(--border2);color:var(--fg2)}
+.arch-ext{background:var(--warn-bg);border-color:var(--warn);color:var(--warn)}
+.layer-label{font-weight:600;font-size:13px;min-width:80px;display:flex;align-items:center;color:var(--fg2)}
+.arrow-row{text-align:center;color:var(--fg3);font-size:12px;margin:2px 0}
+@media(max-width:600px){.wrap{padding:1rem}h1{font-size:22px}.nav{gap:4px}.nav button{font-size:12px;padding:5px 10px}.arch-layer{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Project 2 — Evaluation Prep Guide</h1>
+<p class="subtitle">Team 42 · CS6401 Software Engineering · Spring 2026</p>
+
+<div class="nav" id="nav">
+  <button data-tab="arch" class="active">Architecture</button>
+  <button data-tab="task1">Task 1: Stars</button>
+  <button data-tab="task2">Task 2: Feeds</button>
+  <button data-tab="task3">Task 3: Bugs</button>
+  <button data-tab="task4">Task 4: Dashboard</button>
+  <button data-tab="task5">Task 5: Translation</button>
+  <button data-tab="task6">Task 6: Pulse</button>
+  <button data-tab="killer">Killer Q&A</button>
+</div>
+
+<!-- ===== ARCH ===== -->
+<div class="section active" id="arch">
+<h2>High-level architecture diagram</h2>
+<p>Apache Roller follows a <strong>4-layer architecture</strong>: JSP views → Struts2 actions → business managers → JPA/database. All 6 features respect this layering. <span class="arch-node arch-new" style="display:inline;padding:2px 6px;font-size:12px">Blue = new</span> <span class="arch-node arch-old" style="display:inline;padding:2px 6px;font-size:12px">Gray = existing</span> <span class="arch-node arch-ext" style="display:inline;padding:2px 6px;font-size:12px">Orange = external</span></p>
+
+<div style="margin:1.5rem 0">
+  <div class="arch-layer"><span class="layer-label">View</span>
+    <span class="arch-node arch-new">StarredWeblogs.jsp</span><span class="arch-node arch-new">Trending.jsp</span><span class="arch-node arch-new">ContentFilters.jsp</span><span class="arch-node arch-new">BugReportAdmin.jsp</span><span class="arch-node arch-new">SiteDashboard.jsp</span><span class="arch-node arch-new">Translate.jsp</span><span class="arch-node arch-new">CommunityPulse.jsp</span></div>
+  <div class="arrow-row">▼ tiles.xml (9 new tile definitions) ▼</div>
+  <div class="arch-layer"><span class="layer-label">Action</span>
+    <span class="arch-node arch-new">StarAction</span><span class="arch-node arch-new">TrendingAction</span><span class="arch-node arch-new">ContentFilters</span><span class="arch-node arch-new">BugReportAdmin</span><span class="arch-node arch-new">SiteDashboard</span><span class="arch-node arch-new">TranslateEntryAction</span><span class="arch-node arch-new">CommunityPulse</span></div>
+  <div class="arrow-row">▼ struts.xml (12 new action mappings) ▼</div>
+  <div class="arch-layer"><span class="layer-label">Business</span>
+    <span class="arch-node arch-new">StarManager</span><span class="arch-node arch-new">FilterChainManager<br><small>(Chain of Resp.)</small></span><span class="arch-node arch-new">BugReportManager<br>+ BugEventPublisher<br><small>(Observer)</small></span><span class="arch-node arch-new">DashboardDirector<br>+ Builder + Providers<br><small>(Builder+Strategy)</small></span><span class="arch-node arch-new">TranslationFactory<br>+ Cache<br><small>(Adapter+Factory)</small></span><span class="arch-node arch-new">InsightStrategy<br><small>(Strategy ×3)</small></span></div>
+  <div class="arrow-row">▼ Guice DI: 3 new bindings in JPAWebloggerModule ▼</div>
+  <div class="arch-layer"><span class="layer-label">Data</span>
+    <span class="arch-node arch-new">roller_star</span><span class="arch-node arch-new">roller_bugreport</span><span class="arch-node arch-new">roller_translation_cache</span><span class="arch-node arch-new">roller_translation_pref</span><span class="arch-node arch-old">roller_user</span><span class="arch-node arch-old">roller_weblogentry</span><span class="arch-node arch-old">roller_comment</span></div>
+  <div class="arrow-row">▼ External services ▼</div>
+  <div class="arch-layer"><span class="layer-label">External</span>
+    <span class="arch-node arch-ext">Sarvam AI</span><span class="arch-node arch-ext">MyMemory</span><span class="arch-node arch-ext">GroqCloud (Llama 3.1)</span><span class="arch-node arch-ext">SMTP / Mailpit</span></div>
+</div>
+
+<div class="callout callout-info"><strong>Key talking point:</strong> We added 3 new Guice bindings (<code>StarManager → JPAStarManagerImpl</code>, <code>BugReportManager → JPABugReportManagerImpl</code>, <code>TranslationManager → JPATranslationManagerImpl</code>) in <code>JPAWebloggerModule.java</code> and exposed them through the existing <code>Weblogger</code> interface — exactly how every existing Roller manager works. No new frameworks were introduced.</div>
+
+<h2>Why these features required new design</h2>
+<p>Roller's existing architecture handles content <em>display</em> well (Velocity templates, rendering plugins) but had no built-in support for:</p>
+<ul>
+  <li><strong>User engagement tracking</strong> — no concept of user-content relationship beyond authorship</li>
+  <li><strong>Save-time content processing</strong> — the existing <code>WeblogEntryPlugin</code> system transforms at <em>render time</em> (SmileysPlugin, ConvertLineBreaksPlugin), but raw content stays untouched in DB. We needed filters that <em>persist</em> the processed content.</li>
+  <li><strong>Event-driven notifications</strong> — Roller had no observer/event system; actions directly call managers</li>
+  <li><strong>Configurable reporting</strong> — admin pages existed for user/weblog management, not aggregated metrics</li>
+  <li><strong>External API integration</strong> — no abstraction for calling third-party services with different interfaces</li>
+  <li><strong>Comment analytics</strong> — comments stored and displayed, but no analysis pipeline</li>
+</ul>
+
+<h2>5 patterns — quick reference</h2>
+<table>
+  <tr><th>Pattern</th><th>Task</th><th>Core problem solved</th></tr>
+  <tr><td><strong>Chain of Responsibility</strong></td><td>2: Feeds</td><td>Add/remove/reorder processing steps at runtime</td></tr>
+  <tr><td><strong>Observer</strong></td><td>3: Bugs</td><td>Broadcast events to multiple channels without coupling</td></tr>
+  <tr><td><strong>Builder + Strategy</strong></td><td>4: Dashboard</td><td>Separate view recipes from data-fetching logic</td></tr>
+  <tr><td><strong>Adapter + Factory</strong></td><td>5: Translation</td><td>Normalize incompatible APIs + switchable providers</td></tr>
+  <tr><td><strong>Strategy</strong></td><td>6: Pulse</td><td>Swap insight methods by resource availability</td></tr>
+</table>
+
+<h2>Cross-task integration (mention proactively!)</h2>
+<ul>
+  <li><code>MostStarredBlogProvider</code> (Task 4 Builder) → calls <code>StarManager.getTrendingWeblogs(1)</code> (Task 1)</li>
+  <li><code>BugReportSummaryProvider</code> (Task 4 Builder) → queries <code>BugReportManager</code> (Task 3)</li>
+  <li>Translation cache key (Task 5B) includes <code>providerId</code> → works with any Adapter (Task 5A)</li>
+  <li>Filter chain (Task 2) hooks into <code>JPAWeblogEntryManagerImpl.saveWeblogEntry()</code> line 231</li>
+</ul>
+
+<h2>SOLID alignment</h2>
+<table>
+  <tr><th>Principle</th><th>Evidence</th></tr>
+  <tr><td><strong>SRP</strong></td><td>Each filter/provider/strategy/channel has one reason to change</td></tr>
+  <tr><td><strong>OCP</strong></td><td>New filters, channels, providers, strategies, metrics → implement interface + register. Zero existing code changes.</td></tr>
+  <tr><td><strong>LSP</strong></td><td>Swap <code>SarvamTranslationProvider</code> for <code>MyMemoryTranslationProvider</code> → action works unchanged</td></tr>
+  <tr><td><strong>ISP</strong></td><td><code>InsightStrategy</code> has only <code>analyze()</code>. No interface bloat.</td></tr>
+  <tr><td><strong>DIP</strong></td><td>Actions depend on interfaces. Guice wires concrete classes.</td></tr>
+</table>
+</div>
+
+<!-- ===== TASK 1 ===== -->
+<div class="section" id="task1">
+<h2>Task 1: Stars & Trending <span class="tag tag-marks">10 marks</span></h2>
+
+<h3>Why this change was needed</h3>
+<p>Roller had no user engagement model beyond authorship and comments. No way to favourite content or surface popular posts. Stars add a <strong>user-content affinity model</strong> as a first-class JPA entity.</p>
+
+<h3>Design decision: single table vs. two tables</h3>
+<div class="vs"><table>
+  <tr><th>Option</th><th>Pros</th><th>Cons</th><th></th></tr>
+  <tr><td>Single <code>roller_star</code> with <code>target_type</code> enum</td><td>One manager, one query set, extensible (add COMMENT starring = add enum value)</td><td>WHERE clause on type in every query</td><td class="chosen">✓ Chosen</td></tr>
+  <tr><td>Separate tables per type</td><td>Simpler per-table queries</td><td>Duplicate managers, duplicate trending logic, new table per entity type</td><td class="rejected">✗</td></tr>
+</table></div>
+
+<h3>Why no formal GoF pattern</h3>
+<p>The core challenge is <strong>query optimization</strong>, not behavioral variation. The assignment says "do not iterate over individual articles" — the solution is efficient JPQL (<code>GROUP BY / COUNT / LIMIT</code>), not a pattern. Applying Strategy for "different trending algorithms" would be force-fitting a pattern to a fixed requirement.</p>
+
+<h3>Key implementation details</h3>
+<ul>
+  <li><strong>Trending query:</strong> <code>SELECT s.targetId, COUNT(s) as cnt FROM Star s WHERE s.targetType = ...ENTRY GROUP BY s.targetId ORDER BY cnt DESC</code> + <code>setMaxResults(5)</code>. Single aggregate query, no per-article iteration.</li>
+  <li><strong>Recency:</strong> Starred weblogs sorted by most-recent entry <code>pubTime</code> via JOIN in named query — SQL sorts, not Java.</li>
+  <li><strong>Pagination:</strong> JPA offset/limit (page size 20), not in-memory slicing.</li>
+  <li><strong>Duplicate prevention:</strong> Unique composite index <code>(userid, target_id, target_type)</code> + manager-level check.</li>
+</ul>
+
+<h3>Anticipated TA questions</h3>
+<div class="qa"><div class="q">Q: How do you avoid N+1 for trending?</div><div class="a">One aggregate query gets top-N target IDs with counts. Then one batch entity lookup. Total: 2 queries, not N+1.</div></div>
+<div class="qa"><div class="q">Q: What about ties in star count?</div><div class="a">DB's internal ordering breaks ties. For production: add secondary sort on <code>MAX(s.createdAt)</code>. Not required for the assignment.</div></div>
+</div>
+
+<!-- ===== TASK 2 ===== -->
+<div class="section" id="task2">
+<h2>Task 2: Transforming Feeds <span class="tag tag-pattern">Chain of Responsibility</span> <span class="tag tag-marks">10 marks</span></h2>
+
+<h3>Why this change was needed</h3>
+<p>Roller already had <code>WeblogEntryPlugin</code> (SmileysPlugin, ConvertLineBreaksPlugin, etc.), but those transform at <strong>render time</strong> — raw content stays untouched in DB. The assignment requires <strong>save-time pre-processing</strong> where filtered content is persisted. Also, existing plugins have no admin enable/disable UI. We needed a fundamentally different pipeline.</p>
+
+<h3>Pattern: CoR vs closest alternatives</h3>
+<div class="vs"><table>
+  <tr><th>Pattern</th><th>How it would work</th><th>Verdict</th></tr>
+  <tr><td><strong>Chain of Responsibility</strong></td><td>Independent filter objects with <code>apply()</code> + <code>getOrder()</code>, managed in <code>CopyOnWriteArrayList</code></td><td class="chosen">✓ Maps directly to "add/remove steps without affecting remaining process." Runtime enable/disable via admin UI.</td></tr>
+  <tr><td>Decorator</td><td>Each filter wraps the previous, forming nested chain</td><td class="rejected">✗ Decorators modify the <em>interface</em>. Our filters operate independently on the same <code>WeblogEntry</code>. Runtime removal = rebuild entire wrapper chain.</td></tr>
+  <tr><td>Pipeline</td><td>Fixed sequence with typed inputs/outputs</td><td class="rejected">✗ Implies fixed structure. We need runtime enable/disable without restructuring. Also, Pipeline transforms data <em>between</em> stages; our filters mutate the same object.</td></tr>
+  <tr><td>Strategy</td><td>Pick one algorithm</td><td class="rejected">✗ We need multiple filters to <em>compose</em> in sequence, not pick one-of-many.</td></tr>
+</table></div>
+
+<h3>Why static rules (not LLMs)</h3>
+<p>Filters execute in the blog save path. Adding 2-5s of API latency every save would degrade UX. Static rules (regex, word counting, frequency analysis) are deterministic, fast, and have zero external dependencies. The pipeline is extensible — adding an LLM-based filter later = implement <code>ContentFilter</code>.</p>
+
+<h3>Integration point (critical to know)</h3>
+<div class="callout callout-info"><code>FilterChainManager.getInstance().processEntry(entry)</code> is called at <strong>line 231 of <code>JPAWeblogEntryManagerImpl.saveWeblogEntry()</code></strong> — right before <code>strategy.store(entry)</code>. Every blog save goes through the pipeline transparently.</div>
+
+<h3>Code trace-through</h3>
+<pre>1. User clicks "Save" → Struts2 dispatches → EntryEdit action
+2. EntryEdit calls WeblogEntryManager.saveWeblogEntry(entry)
+3. JPAWeblogEntryManagerImpl line 231:
+   FilterChainManager.getInstance().processEntry(entry)
+4. FilterChain.execute(entry) iterates CopyOnWriteArrayList:
+   → ProfanityFilter.apply(entry)       [order 10] — regex word-boundary matching
+   → TextSummarizerFilter.apply(entry)  [order 20] — truncate to 5000 words
+   → TagGeneratorFilter.apply(entry)    [order 30] — top-5 keywords appended
+5. Each filter modifies entry.getText() in place
+6. strategy.store(entry) → JPA persists the processed content</pre>
+
+<h3>Anticipated TA questions</h3>
+<div class="qa"><div class="q">Q: Roller has WeblogEntryPlugin — why not use it?</div><div class="a">Existing plugins transform at <em>render time</em>; raw content stays in DB. We need <em>save-time</em> processing where filtered content is persisted. Also, existing plugins lack admin enable/disable UI.</div></div>
+<div class="qa"><div class="q">Q: What if filters conflict?</div><div class="a">Intentional ordering: profanity (10) cleans first, summarizer (20) trims, tag generator (30) extracts keywords from already-cleaned text. Each filter.apply() is wrapped in try-catch — a failing filter doesn't block the save.</div></div>
+<div class="qa"><div class="q">Q: Why CopyOnWriteArrayList?</div><div class="a">Blog saves (reads) vastly outnumber admin filter toggles (writes). COWAL copies the array only on mutation — optimized for read-heavy patterns.</div></div>
+</div>
+
+<!-- ===== TASK 3 ===== -->
+<div class="section" id="task3">
+<h2>Task 3: Bug Reports <span class="tag tag-pattern">Observer</span> <span class="tag tag-marks">15 marks</span></h2>
+
+<h3>Why this change was needed</h3>
+<p>Roller had no user feedback mechanism. The assignment requires a notification system that is <em>"modular enough to support addition of new notification channels without any impact to remaining channels."</em> This extensibility requirement drives the pattern choice.</p>
+
+<h3>Pattern: Observer vs closest alternatives</h3>
+<div class="vs"><table>
+  <tr><th>Pattern</th><th>How it would work</th><th>Verdict</th></tr>
+  <tr><td><strong>Observer</strong></td><td><code>BugEventPublisher</code> (subject) maintains list of <code>NotificationChannel</code> (observers). Events broadcast to all.</td><td class="chosen">✓ Adding Slack = 1 new class + 1 line registration. Zero changes to existing code. Publisher doesn't know channel implementations.</td></tr>
+  <tr><td>Mediator</td><td>Central mediator coordinates between manager and channels</td><td class="rejected">✗ Mediator for many-to-many coupling. We have one publisher → N channels. Observer handles this simpler hub-and-spoke naturally.</td></tr>
+  <tr><td>Event Bus (Guava)</td><td>Typed events, annotation-based dispatch</td><td class="rejected">✗ Would work, but adds external dependency. Observer achieves same decoupling with standard Java. Assignment values pattern understanding.</td></tr>
+  <tr><td>Direct calls</td><td>Manager calls email/log services directly</td><td class="rejected">✗ Violates OCP — adding Slack = modifying the manager. Couples data layer to notification specifics.</td></tr>
+</table></div>
+
+<h3>Why Mailpit instead of MailerSend</h3>
+<p>Assignment suggested MailerSend, but it requires account creation, API keys, domain verification. <strong>Mailpit</strong> is a Docker container that captures all SMTP traffic with a web inbox at <code>localhost:8025</code>. Fully reproducible, zero external dependencies. TA can verify emails without creating accounts.</p>
+
+<h3>Why synchronous notifications</h3>
+<p>Email sending is in the action thread. Each channel call is try-catch wrapped, so a failed email doesn't block other channels. For production: async queue (JMS/Kafka). For this scale: synchronous is simpler and sufficient. Acknowledged as trade-off.</p>
+
+<h3>Extensibility proof (show in eval)</h3>
+<pre>// Step 1: Implement interface (one class)
+public class SlackNotificationChannel implements NotificationChannel {
+    public void onBugReportCreated(BugReport r) { /* POST to webhook */ }
+    public void onBugReportUpdated(BugReport r) { /* POST to webhook */ }
+    public void onBugReportDeleted(BugReport r) { /* POST to webhook */ }
+}
+// Step 2: Register (one line)
+BugEventPublisher.getInstance().subscribe(new SlackNotificationChannel());
+// ZERO changes to: BugReportManager, BugEventPublisher, Email, Log channels</pre>
+
+<h3>Code trace-through</h3>
+<pre>1. User submits SubmitBugReport.jsp form
+2. SubmitBugReport action: bugReportManager.saveBugReport(report)
+3. After save: BugEventPublisher.getInstance().notifyBugCreated(report)
+4. Publisher iterates CopyOnWriteArrayList&lt;NotificationChannel&gt;:
+   → LogNotificationChannel.onBugReportCreated → LOG.info(...)
+   → EmailNotificationChannel.onBugReportCreated →
+     SMTP to admin + confirmation to reporter
+5. Mailpit captures both emails → visible at localhost:8025</pre>
+
+<h3>Anticipated TA questions</h3>
+<div class="qa"><div class="q">Q: Why singleton instead of Guice DI?</div><div class="a">Publisher is a pure in-memory event bus — no JPA needed. Roller's Guice bindings are for managers with <code>JPAPersistenceStrategy</code>. Singleton is consistent with other lightweight utilities (FilterChainManager, TranslationProviderFactory).</div></div>
+<div class="qa"><div class="q">Q: How would you actually implement Slack?</div><div class="a">Implement <code>NotificationChannel</code>, POST to Slack webhook URL (configured via system property) in each lifecycle method, register at startup. <code>BugReportManager</code>, <code>BugEventPublisher</code>, and all existing channels remain untouched.</div></div>
+</div>
+
+<!-- ===== TASK 4 ===== -->
+<div class="section" id="task4">
+<h2>Task 4: Admin Dashboard <span class="tag tag-pattern">Builder + Strategy</span> <span class="tag tag-marks">15 marks</span></h2>
+
+<h3>Why this change was needed</h3>
+<p>Roller's admin had user/weblog management pages but no aggregated site health view. The assignment requires two views (minimalist, full) where <em>"definition of each view shouldn't be described with the logic to fetch data."</em> This separation constraint directly maps to Builder.</p>
+
+<h3>Pattern: Builder vs closest alternatives</h3>
+<div class="vs"><table>
+  <tr><th>Pattern</th><th>How it would work</th><th>Verdict</th></tr>
+  <tr><td><strong>Builder + Strategy</strong></td><td>Director = view recipes (which metrics). Builder = assembly. MetricProvider (Strategy) = how to fetch each.</td><td class="chosen">✓ Directly satisfies the requirement's separation. New view = 1 Director method. New metric = 1 Provider class.</td></tr>
+  <tr><td>Abstract Factory</td><td>Factory creates dashboard families per view type</td><td class="rejected">✗ Our metrics aren't related families — they're independent, composable units. Builder's step-by-step assembly fits better.</td></tr>
+  <tr><td>Template Method</td><td>Abstract class, subclass per view</td><td class="rejected">✗ Couples view definition to fetching logic in same hierarchy — exactly what the requirement forbids.</td></tr>
+  <tr><td>Simple if/else</td><td><code>if (full) fetchAll() else fetchMinimal()</code></td><td class="rejected">✗ Metric logic lives alongside view definition. Violates the explicit requirement.</td></tr>
+</table></div>
+
+<h3>Where Strategy fits</h3>
+<p><code>MetricProvider</code> is a Strategy interface — each provider is an interchangeable algorithm for one metric. The <code>ConcreteDashboardBuilder</code>'s static PROVIDERS map is a strategy registry. Builder handles assembly; Strategy handles computation.</p>
+
+<h3>7 metrics (exceeds required 5)</h3>
+<table>
+  <tr><th>Provider</th><th>Note</th></tr>
+  <tr><td>UserCountProvider</td><td>Total registered users</td></tr>
+  <tr><td>TopCategoryProvider</td><td>Category with most entries</td></tr>
+  <tr><td><strong>MostStarredBlogProvider</strong></td><td><strong>Reuses <code>StarManager</code> from Task 1</strong></td></tr>
+  <tr><td>TopActiveUsersProvider</td><td>Top 3 by entry count</td></tr>
+  <tr><td>TotalEntriesProvider</td><td>Published entries</td></tr>
+  <tr><td>TotalCommentsProvider</td><td>Approved comments</td></tr>
+  <tr><td><strong>BugReportSummaryProvider</strong></td><td><strong>Queries <code>BugReportManager</code> from Task 3</strong></td></tr>
+</table>
+
+<h3>11 classes — is it over-engineering?</h3>
+<p>For 2 views, yes, a conditional would work. But: (a) the assignment <em>requires</em> the separation, (b) providers are independently testable, (c) providers reuse across views, (d) new view = single 3-line method: <code>buildSecurity() { return new ConcreteDashboardBuilder("security").addUserCount().addBugReportSummary().build(); }</code></p>
+
+<h3>Anticipated TA questions</h3>
+<div class="qa"><div class="q">Q: Why static PROVIDERS map instead of Guice?</div><div class="a">Providers call Guice-managed managers internally (<code>WebloggerFactory.getWeblogger().getStarManager()</code>). They don't need injection themselves. Static map keeps initialization simple and explicit.</div></div>
+<div class="qa"><div class="q">Q: What if a provider fails?</div><div class="a">Each <code>fetch()</code> is try-catch wrapped → returns <code>DashboardMetric(key, label, "N/A")</code>. One broken metric doesn't collapse the dashboard.</div></div>
+</div>
+
+<!-- ===== TASK 5 ===== -->
+<div class="section" id="task5">
+<h2>Task 5: Translation <span class="tag tag-pattern">Adapter + Factory</span> <span class="tag tag-marks">35 marks (20+15)</span></h2>
+
+<h3>Why this change was needed</h3>
+<p>Roller had no internationalization beyond static locale files. The assignment requires application-side translation that is <em>"easily switchable"</em> between providers. The two APIs have <strong>completely different interfaces</strong>:</p>
+<table>
+  <tr><th></th><th>Sarvam AI</th><th>MyMemory</th></tr>
+  <tr><td>Language codes</td><td><code>en-IN</code>, <code>hi-IN</code></td><td><code>en</code>, <code>hi</code></td></tr>
+  <tr><td>Auth</td><td><code>api-subscription-key</code> header</td><td>None (free tier)</td></tr>
+  <tr><td>Response field</td><td><code>translated_text</code></td><td><code>responseData.translatedText</code></td></tr>
+  <tr><td>Extra params</td><td><code>speaker_gender</code>, <code>mode</code>, <code>model</code></td><td>Optional <code>de</code> (email for quota)</td></tr>
+</table>
+<p>Normalizing these incompatible interfaces is the Adapter's job.</p>
+
+<h3>Pattern: Adapter + Factory vs closest alternatives</h3>
+<div class="vs"><table>
+  <tr><th>Pattern</th><th>How it would work</th><th>Verdict</th></tr>
+  <tr><td><strong>Adapter + Factory</strong></td><td>Each provider adapts its API to <code>TranslationProvider</code>. Factory manages creation/lookup by ID.</td><td class="chosen">✓ Adapter isolates API differences. Factory enables switchability — UI dropdown from <code>getAllProviders()</code>. Adding Google Translate = 1 Adapter + 1 <code>register()</code> call.</td></tr>
+  <tr><td>Strategy alone</td><td>Provider selected as runtime strategy</td><td class="rejected">✗ Providers aren't just different algorithms — they have different <em>interfaces</em> (endpoints, auth, response formats). The normalization is Adapter's job, not Strategy's.</td></tr>
+  <tr><td>Facade</td><td>Single facade hides all providers</td><td class="rejected">✗ Facade simplifies a complex subsystem. We need providers individually addressable (user picks). Facade hides the choice.</td></tr>
+  <tr><td>Bridge</td><td>Decouple abstraction from implementation</td><td class="rejected">✗ Bridge separates two independently varying hierarchies. We have one hierarchy and one dimension of variation. Adapter is simpler and more direct.</td></tr>
+</table></div>
+
+<h3>5B: Two-level caching design</h3>
+<ul>
+  <li><strong>L1 (ConcurrentHashMap):</strong> Sub-ms lookups. Key = <code>provider:srcLang:tgtLang:contentHash</code></li>
+  <li><strong>L2 (roller_translation_cache):</strong> Persists across restarts. Composite index for fast lookups.</li>
+  <li><strong>Lookup:</strong> L1 → L2 (promote to L1 on hit) → API call → store in both</li>
+  <li><strong>Section-level:</strong> HTML split by block elements. Each section cached independently. When author edits: only changed sections retranslated.</li>
+  <li><strong>"Significant change":</strong> >10% word-level diff after HTML stripping → retranslate. Below → reuse. (e.g., typo fix doesn't retranslate)</li>
+  <li><strong>Cache key includes providerId:</strong> Switching Sarvam→MyMemory doesn't serve stale translations.</li>
+</ul>
+
+<div class="callout callout-warn"><strong>Known trade-off:</strong> <code>String.hashCode()</code> is 32-bit, collision-prone. For production: SHA-256. For project scope: fast and sufficient.</div>
+<div class="callout callout-warn"><strong>Known trade-off:</strong> L1 cache grows unbounded. For production: LRU eviction or TTL. For project scope: resets on restart.</div>
+
+<h3>Code trace-through</h3>
+<pre>1. User selects provider + languages → TranslateEntryAction
+2. TranslationProviderFactory.getProvider("sarvam") → SarvamTranslationProvider
+3. TranslationCache.translateWithCache(text, src, tgt, "sarvam", provider):
+   a. Split HTML into sections by &lt;p&gt;, &lt;h1-h6&gt;, &lt;div&gt;
+   b. For each section:
+      → key = "sarvam:en:hi:{hashCode}"
+      → L1 hit? → use cached, next section
+      → L1 miss → L2 DB query → hit? → promote to L1, use
+      → Both miss → provider.translate(section, "en", "hi")
+        → SarvamTranslationProvider maps "en"→"en-IN"
+        → POSTs to api.sarvam.ai with api-subscription-key header
+        → Extracts "translated_text" from response
+      → Store in L1 + L2
+   c. Reassemble sections
+4. Save TranslationPreference → auto-translate on revisit</pre>
+
+<h3>Anticipated TA questions</h3>
+<div class="qa"><div class="q">Q: Why MyMemory?</div><div class="a">Free tier, no API key, demo-able without external accounts. Both providers support ≥5 languages bidirectionally.</div></div>
+<div class="qa"><div class="q">Q: How do you add Google Translate?</div><div class="a">Implement <code>TranslationProvider</code> (handle Google's language codes, OAuth2, response JSON). Call <code>factory.register()</code>. Auto-appears in UI dropdown. Cache works unchanged — key includes <code>providerId</code>.</div></div>
+<div class="qa"><div class="q">Q: What's a "significant change"?</div><div class="a">Strip HTML, normalize whitespace, compare word-by-word. >10% differ → significant. The <code>hasSignificantChange()</code> method in <code>TranslationCache</code> implements this. 10% balances freshness vs. API cost.</div></div>
+</div>
+
+<!-- ===== TASK 6 ===== -->
+<div class="section" id="task6">
+<h2>Task 6: Community Pulse <span class="tag tag-pattern">Strategy</span> <span class="tag tag-marks">15 marks</span></h2>
+
+<h3>Why this change was needed</h3>
+<p>Comments were stored and displayed but never analyzed. Authors read every comment to gauge sentiment. The assignment requires "multiple insight-generation methods depending on available resources" — explicitly a Strategy scenario. The 6A/6B split mandates lightweight classical methods AND AI-powered analysis coexisting.</p>
+
+<h3>Pattern: Strategy vs closest alternatives</h3>
+<div class="vs"><table>
+  <tr><th>Pattern</th><th>How it would work</th><th>Verdict</th></tr>
+  <tr><td><strong>Strategy</strong></td><td>3 strategies behind <code>InsightStrategy</code>, all returning <code>PulseInsight</code>. Selected at runtime.</td><td class="chosen">✓ Classic Strategy. User/system picks the algorithm. JSP renders identically regardless of which strategy ran.</td></tr>
+  <tr><td>Template Method</td><td>Abstract class with shared steps, subclasses override specifics</td><td class="rejected">✗ Our strategies share almost nothing — LLM strategy samples comments differently than keyword strategy. Template Method forces a shared skeleton that doesn't exist.</td></tr>
+  <tr><td>Chain of Responsibility</td><td>Stack analyses in sequence</td><td class="rejected">✗ We want to <em>pick one</em> based on resources, not run all in sequence.</td></tr>
+</table></div>
+
+<h3>3 strategies (exceeds required 2)</h3>
+<ol>
+  <li><strong>KeywordFrequencyStrategy</strong> (6A) — word counting + stop-word filtering. Indicators: activity level, top-10 keywords, representative comments.</li>
+  <li><strong>SentimentHeuristicStrategy</strong> (6A) — predefined positive/negative/question word lists. Classifies comments, produces sentiment distribution.</li>
+  <li><strong>LlmInsightStrategy</strong> (6B) — GroqCloud Llama 3.1-8b-instant. <strong>Selective LLM usage:</strong> keywords extracted locally, LLM only for theme synthesis + recap. Max 20 comments sampled. 10s timeout.</li>
+</ol>
+
+<h3>"Don't use a nuke to kill a fly"</h3>
+<p>LLM does NOT extract keywords — that's trivial statistically. LLM used only for what statistics <em>can't</em> do: synthesizing themes into readable sentences and generating natural-language recaps.</p>
+
+<h3>Graceful fallback</h3>
+<p><code>isAvailable()</code> checks for <code>groq.api.key</code>. Missing → auto-falls back to KeywordFrequencyStrategy + shows banner. Feature works with zero API keys.</p>
+
+<h3>Anticipated TA questions</h3>
+<div class="qa"><div class="q">Q: 20 comment cap — what about 500+ comments?</div><div class="a">Evenly sample: <code>step = total/20</code>, pick every step-th comment for representative distribution. Each truncated to 300 chars. Keyword extraction runs on ALL comments locally. Only the LLM receives the sample.</div></div>
+<div class="qa"><div class="q">Q: Manual JSON parsing — why not Jackson?</div><div class="a">Avoid adding a dependency. OpenAI-compatible response is predictable. If parsing fails, graceful fallback to keyword-based analysis.</div></div>
+<div class="qa"><div class="q">Q: How does 6A vs 6B map?</div><div class="a">6A = "classical, inexpensive methods" → KeywordFrequency + SentimentHeuristic. 6B = "heavier AI" → LlmInsight. All unified under <code>InsightStrategy</code>; user picks from dropdown.</div></div>
+</div>
+
+<!-- ===== KILLER ===== -->
+<div class="section" id="killer">
+<h2>Killer questions TAs love to ask</h2>
+
+<div class="callout callout-danger"><strong>#1 risk: "Claude Code wrote it — what do YOU understand?"</strong><br>Counter by tracing a request through code from memory. Practice the traces in Tasks 2, 3, 5 aloud. If you can walk line 231 of <code>JPAWeblogEntryManagerImpl</code> → FilterChainManager → FilterChain → 3 filters → JPA persist, you're golden.</div>
+
+<h3>Pattern-level</h3>
+<div class="qa"><div class="q">Q: Which pattern are you most proud of?</div><div class="a"><strong>Adapter + Factory for translation.</strong> It solved a real problem — two APIs with incompatible interfaces. The Adapter normalizes them; the Factory makes them switchable. Cache integrates transparently. Extensibility is tangible: third provider = zero existing code changes.</div></div>
+
+<div class="qa"><div class="q">Q: If you could redo one pattern?</div><div class="a"><strong>Dashboard Builder.</strong> 11 classes for 2 views is heavy. Simpler enum-based metric selection + factory might achieve the same separation. But the assignment's explicit requirement practically demands Builder.</div></div>
+
+<div class="qa"><div class="q">Q: How do patterns interact across tasks?</div><div class="a">Three integrations: (1) MostStarredBlogProvider → StarManager (Task 1), (2) BugReportSummaryProvider → BugReportManager (Task 3), (3) Cache key includes providerId → works with any Adapter. Patterns compose, not isolated.</div></div>
+
+<h3>Architecture-level</h3>
+<div class="qa"><div class="q">Q: How did you integrate with Roller's existing architecture?</div><div class="a">3 new Guice bindings in <code>JPAWebloggerModule</code>. Exposed through <code>Weblogger</code> interface. ORM XML mappings. Struts2 actions with existing interceptor stacks. No new frameworks.</div></div>
+
+<div class="qa"><div class="q">Q: Why singletons (FilterChainManager, BugEventPublisher, etc.) instead of Guice?</div><div class="a">These are lightweight in-memory utilities — no JPA needed. Roller's Guice bindings are for managers using <code>JPAPersistenceStrategy</code>. Singletons are consistent with each other. Refactoring to Guice would be minimal if needed.</div></div>
+
+<div class="qa"><div class="q">Q: What would break if requirement X changed?</div><div class="a"><strong>"Per-weblog filters":</strong> FilterChainManager storage changes (Map&lt;weblogId, FilterChain&gt;). ContentFilter interface unchanged.<br><strong>"Translate comments too":</strong> New action sibling. Adapter, Factory, Cache all unchanged.<br><strong>"Bug priority escalation":</strong> New NotificationChannel. Existing channels untouched.<br>Answer pattern: "Only class X changes" = proof of modularity.</div></div>
+
+<h3>Code ownership (practice these aloud!)</h3>
+<div class="qa"><div class="q">Q: Walk me through what happens when a user saves a blog entry.</div><div class="a">Save → Struts2 → EntryEdit → <code>saveWeblogEntry()</code> → line 231: <code>FilterChainManager.getInstance().processEntry(entry)</code> → <code>FilterChain.execute()</code> iterates COWAL: ProfanityFilter(10) cleans text → TextSummarizer(20) truncates → TagGenerator(30) appends keywords → back in manager: <code>strategy.store(entry)</code> → JPA persist to PostgreSQL.</div></div>
+
+<div class="qa"><div class="q">Q: Walk me through translation with cached sections.</div><div class="a"><code>TranslateEntryAction</code> → <code>TranslationProviderFactory.getProvider("sarvam")</code> → <code>TranslationCache.translateWithCache()</code> splits HTML by block elements → per section: build key "sarvam:en:hi:{hash}" → check L1 ConcurrentHashMap → if miss, check L2 DB → if miss, call <code>provider.translate()</code> → Sarvam maps "en"→"en-IN", POSTs to API, extracts "translated_text" → store in L1+L2 → reassemble → save preference for auto-translate on revisit.</div></div>
+
+<h3>Recommended demo flow (15 min)</h3>
+<ol>
+  <li><strong>Architecture</strong> (2 min) — Draw 4 layers, name 5 patterns, mention cross-task integration</li>
+  <li><strong>Task 5 Translation</strong> (3 min) — Switch providers, show in-place text swap, reload for cache hit</li>
+  <li><strong>Task 3 Bugs</strong> (3 min) — Submit bug, show Mailpit inbox, change status → show notifications</li>
+  <li><strong>Task 2 Filters</strong> (2 min) — Post with profanity → filtered. Disable filter → passes through</li>
+  <li><strong>Task 4 Dashboard</strong> (2 min) — Toggle minimalist/full. Point out cross-task metrics</li>
+  <li><strong>Task 6 Pulse</strong> (2 min) — Keyword analysis, LLM if available, show fallback</li>
+  <li><strong>Task 1 Stars</strong> (1 min) — Star, trending page, mention aggregate query</li>
+</ol>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.nav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav button').forEach(x => x.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+</script>
+</body>
+</html>
