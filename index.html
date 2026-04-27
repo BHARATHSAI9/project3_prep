@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FoodSave - Team Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF7;
+  --card: #FFFFFF;
+  --text: #1A1A1A;
+  --muted: #6B7280;
+  --border: #E5E7EB;
+  --green: #2D6A4F;
+  --green-light: #D1FAE5;
+  --green-dark: #1B4332;
+  --amber: #D97706;
+  --amber-light: #FEF3C7;
+  --blue: #2563EB;
+  --blue-light: #DBEAFE;
+  --red: #DC2626;
+  --red-light: #FEE2E2;
+  --purple: #7C3AED;
+  --purple-light: #EDE9FE;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* nav */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--green-dark);
+  padding: 14px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.topbar h1 { color: #fff; font-size: 18px; font-weight: 700; }
+.topbar span { color: #D1FAE5; font-size: 13px; }
+
+/* layout */
+.layout { display: flex; min-height: calc(100vh - 52px); }
+
+.sidebar {
+  width: 280px; min-width: 280px;
+  background: white;
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  position: sticky; top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+
+.sidebar-section { padding: 0 16px; margin-bottom: 20px; }
+.sidebar-section h3 {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--muted); margin-bottom: 8px; padding: 0 8px;
+}
+
+.sidebar a {
+  display: block; padding: 8px 12px; border-radius: 8px;
+  color: var(--text); text-decoration: none; font-size: 14px;
+  margin-bottom: 2px; transition: all 0.15s;
+}
+.sidebar a:hover { background: var(--green-light); color: var(--green-dark); }
+.sidebar a.active { background: var(--green); color: white; font-weight: 500; }
+
+.main {
+  flex: 1; padding: 32px 48px; max-width: 900px;
+}
+
+/* sections */
+.section { display: none; }
+.section.active { display: block; }
+
+.section h2 {
+  font-size: 28px; font-weight: 700; color: var(--green-dark);
+  margin-bottom: 8px;
+}
+.section .subtitle {
+  font-size: 15px; color: var(--muted); margin-bottom: 28px;
+}
+
+.section h3 {
+  font-size: 18px; font-weight: 700; color: var(--text);
+  margin: 28px 0 12px;
+}
+
+.section p { margin-bottom: 16px; font-size: 15px; }
+
+/* cards */
+.card {
+  background: white; border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px; margin-bottom: 16px;
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.card-title {
+  font-size: 16px; font-weight: 700; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-body { font-size: 14px; color: #444; }
+
+/* badges */
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+}
+.badge-green { background: var(--green-light); color: var(--green-dark); }
+.badge-amber { background: var(--amber-light); color: #92400E; }
+.badge-blue { background: var(--blue-light); color: #1E40AF; }
+.badge-red { background: var(--red-light); color: #991B1B; }
+.badge-purple { background: var(--purple-light); color: #5B21B6; }
+
+/* accordion */
+.accordion { margin-bottom: 12px; }
+.accordion-header {
+  background: white; border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 20px;
+  cursor: pointer; display: flex; justify-content: space-between;
+  align-items: center; font-weight: 600; font-size: 15px;
+  transition: all 0.15s; user-select: none;
+}
+.accordion-header:hover { border-color: var(--green); }
+.accordion-header .arrow {
+  transition: transform 0.2s; font-size: 12px; color: var(--muted);
+}
+.accordion.open .accordion-header { border-color: var(--green); background: #F0FDF4; border-radius: 10px 10px 0 0; }
+.accordion.open .arrow { transform: rotate(180deg); }
+.accordion-content {
+  display: none; background: white;
+  border: 1px solid var(--green); border-top: none;
+  border-radius: 0 0 10px 10px; padding: 20px;
+  font-size: 14px; line-height: 1.8;
+}
+.accordion.open .accordion-content { display: block; }
+
+/* code */
+code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #F3F4F6; padding: 2px 6px; border-radius: 4px;
+  font-size: 13px;
+}
+pre {
+  background: #1E293B; color: #E2E8F0; padding: 16px 20px;
+  border-radius: 10px; overflow-x: auto; margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  line-height: 1.6;
+}
+
+/* flow diagram */
+.flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+.flow-step {
+  background: white; border: 1px solid var(--border);
+  padding: 10px 16px; border-radius: 8px; font-size: 13px;
+  font-weight: 500;
+}
+.flow-arrow { color: var(--green); font-weight: 700; font-size: 18px; }
+
+/* qa section */
+.qa { margin-bottom: 16px; }
+.qa-q {
+  font-weight: 700; font-size: 15px; color: var(--green-dark);
+  margin-bottom: 6px; padding-left: 20px; position: relative;
+}
+.qa-q::before { content: "Q"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+.qa-a {
+  font-size: 14px; color: #444; padding-left: 20px; margin-bottom: 16px;
+  position: relative;
+}
+.qa-a::before { content: "A"; position: absolute; left: 0; color: var(--amber); font-weight: 700; }
+
+/* table */
+.info-table {
+  width: 100%; border-collapse: collapse; margin: 12px 0;
+  font-size: 14px;
+}
+.info-table th {
+  background: var(--green-dark); color: white; padding: 10px 14px;
+  text-align: left; font-weight: 500; font-size: 13px;
+}
+.info-table td {
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+}
+.info-table tr:nth-child(even) td { background: #F9FAFB; }
+
+/* search */
+.search-box {
+  width: 100%; padding: 12px 16px; border: 1px solid var(--border);
+  border-radius: 10px; font-size: 14px; outline: none;
+  font-family: 'DM Sans', sans-serif; margin-bottom: 20px;
+}
+.search-box:focus { border-color: var(--green); }
+
+/* highlight for search */
+.highlight { background: #FEF08A; padding: 1px 2px; border-radius: 2px; }
+
+@media (max-width: 768px) {
+  .layout { flex-direction: column; }
+  .sidebar {
+    width: 100%; min-width: 100%; position: relative;
+    top: 0; height: auto; border-right: none; border-bottom: 1px solid var(--border);
+    display: flex; overflow-x: auto; padding: 10px;
+    gap: 4px; white-space: nowrap;
+  }
+  .sidebar-section { display: flex; gap: 4px; margin: 0; padding: 0; }
+  .sidebar-section h3 { display: none; }
+  .sidebar a { white-space: nowrap; font-size: 13px; padding: 6px 12px; }
+  .main { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>FoodSave Study Guide</h1>
+  <span>Team 42 - Evaluation Prep</span>
+</div>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <h3>Overview</h3>
+      <a href="#" data-section="overview" class="active">What is FoodSave?</a>
+      <a href="#" data-section="techstack">Tech Stack</a>
+    </div>
+    <div class="sidebar-section">
+      <h3>Requirements</h3>
+      <a href="#" data-section="functional">Functional Requirements</a>
+      <a href="#" data-section="nfr">Non-Functional Requirements</a>
+      <a href="#" data-section="subsystems">Subsystems</a>
+    </div>
+    <div class="sidebar-section">
+      <h3>Architecture</h3>
+      <a href="#" data-section="stakeholders">Stakeholders (IEEE 42010)</a>
+      <a href="#" data-section="adrs">Architecture Decisions</a>
+      <a href="#" data-section="tactics">Tactics and Patterns</a>
+    </div>
+    <div class="sidebar-section">
+      <h3>Prototype</h3>
+      <a href="#" data-section="demoflow">Demo Flow</a>
+      <a href="#" data-section="codestructure">Code Structure</a>
+      <a href="#" data-section="analysis">Architecture Analysis</a>
+    </div>
+    <div class="sidebar-section">
+      <h3>Evaluation</h3>
+      <a href="#" data-section="qa">Likely Questions</a>
+      <a href="#" data-section="contributions">Who Did What</a>
+    </div>
+  </nav>
+
+  <main class="main" id="content">
+
+    <!-- ============ OVERVIEW ============ -->
+    <div class="section active" id="sec-overview">
+      <h2>What is FoodSave?</h2>
+      <p class="subtitle">the elevator pitch you should be able to give in 30 seconds</p>
+
+      <div class="card">
+        <div class="card-body">
+          <p><strong>The problem:</strong> In India, around 68 million tonnes of food is wasted every year. Restaurants cook extra for peak hours, bakeries have unsold items by evening, hostel canteens prepare food in bulk that students don't finish.</p>
+          <p><strong>Our solution:</strong> FoodSave is a platform where restaurants, bakeries, and canteens can list surplus food at discounted prices. Nearby users can discover these deals in real time, reserve what they want, and pick it up within a given time window.</p>
+          <p><strong>Why it matters:</strong> Vendors recover costs instead of throwing food away. Users get affordable meals. Food waste goes down. Everyone wins.</p>
+        </div>
+      </div>
+
+      <h3>The Core Flow</h3>
+      <div class="flow">
+        <div class="flow-step">Vendor posts surplus food</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Consumer discovers it nearby</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Consumer reserves and pays online</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Consumer picks up with QR</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Vendor confirms pickup</div>
+      </div>
+
+      <h3>Key Design Philosophy</h3>
+      <div class="card">
+        <div class="card-body">
+          <p><strong>Vendor-first approach:</strong> In the initial phase, we prioritize vendor experience. Without enough vendors listing food, the platform has nothing to offer consumers. This thinking shaped a lot of our decisions like online-only payments (to protect vendors from no-shows), fast onboarding (listing within 5 mins), and quick QR scanning (vendors serve many customers).</p>
+          <p><strong>Simple and maintainable:</strong> We went with a modular monolith instead of microservices. We chose proven tech (React, Node, PostgreSQL) instead of trendy frameworks. The goal is a system that a small team can maintain and grow over time.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ TECH STACK ============ -->
+    <div class="section" id="sec-techstack">
+      <h2>Tech Stack</h2>
+      <p class="subtitle">why we picked what we picked</p>
+
+      <table class="info-table">
+        <tr><th>Layer</th><th>Technology</th><th>Why This?</th></tr>
+        <tr><td>Frontend</td><td>React + Next.js</td><td>Huge community in India. Easy to find devs. Next.js gives routing and SSR for free.</td></tr>
+        <tr><td>Backend</td><td>Node.js + Express</td><td>Same language (JavaScript) across frontend and backend. Whole team can work on anything.</td></tr>
+        <tr><td>Database</td><td>PostgreSQL</td><td>Our data is very relational (users have listings, listings have reservations). Rock solid and free.</td></tr>
+        <tr><td>Real-time</td><td>Socket.io</td><td>Built-in room support for targeted notifications. Works great with Express.</td></tr>
+        <tr><td>Containers</td><td>Docker + Docker Compose</td><td>One command to start everything. No "it works on my machine" problems.</td></tr>
+      </table>
+
+      <h3>Why NOT Flutter / React Native?</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>For a prototype, a responsive web app is faster to build. No app store approval needed. Easier to demo in class. We can always wrap it in a mobile app later using a PWA or React Native.</p>
+        </div>
+      </div>
+
+      <h3>Why NOT MongoDB?</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Our data model is naturally relational. Users HAVE listings, listings HAVE reservations, reservations HAVE payments. PostgreSQL handles these relationships cleanly with foreign keys and transactions. MongoDB would need workarounds for things like preventing double-booking which PostgreSQL handles natively with row-level locking.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ FUNCTIONAL ============ -->
+    <div class="section" id="sec-functional">
+      <h2>Functional Requirements</h2>
+      <p class="subtitle">what the system actually does</p>
+
+      <div class="card">
+        <div class="card-title"><span class="badge badge-green">FR-1</span> Vendor Listings</div>
+        <div class="card-body">Vendors can register and list surplus food with title, quantity, price, photo, and a pickup window. Listings can be updated or removed at any time.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-green">FR-2</span> Discovery</div>
+        <div class="card-body">Consumers can browse food listings on a map or list view with filters for distance, cuisine type, and price range.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-green">FR-3</span> Reserve and Pickup</div>
+        <div class="card-body">Consumers can reserve items and show their QR code at the vendor's location. The vendor scans the QR to confirm pickup.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-green">FR-4</span> Online Payments</div>
+        <div class="card-body">Consumers pay online at the time of reservation via PhonePe Business. Vendors receive payouts on a 2 week settlement cycle.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-green">FR-5</span> Notifications</div>
+        <div class="card-body">Push alerts are sent to consumers when nearby vendors post new surplus deals. Vendors get notified when someone reserves their food.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-green">FR-6</span> Vendor Dashboard</div>
+        <div class="card-body">Vendors can track food saved, revenue recovered, pending pickups, and customer ratings through a dashboard.</div>
+      </div>
+    </div>
+
+    <!-- ============ NFR ============ -->
+    <div class="section" id="sec-nfr">
+      <h2>Non-Functional Requirements</h2>
+      <p class="subtitle">every NFR has a business reason, not just a random number</p>
+
+      <table class="info-table">
+        <tr><th>#</th><th>NFR</th><th>Target</th><th>Why This Number?</th></tr>
+        <tr><td>1</td><td>Performance</td><td>Listings under 2s, search under 1s</td><td>Slow load during lunch rush = users leave</td></tr>
+        <tr><td>2</td><td>Availability</td><td>99.9% during peak hours</td><td>Downtime = lost revenue for vendors</td></tr>
+        <tr><td>3</td><td>Scalability</td><td>5000 concurrent users</td><td>Meal-time spikes need headroom</td></tr>
+        <tr><td>4</td><td>Real-time</td><td>New listings visible within 30s</td><td>Food has a short window, delays hurt both sides</td></tr>
+        <tr><td>5</td><td>Security</td><td>Encrypted payments, no location storage</td><td>Users need to trust the platform early on</td></tr>
+        <tr><td>6</td><td>Usability</td><td>Reserve in 3 taps</td><td>Complex flow = fewer conversions</td></tr>
+        <tr><td>7</td><td>QR Speed</td><td>Validated within 500ms</td><td>Vendors serve multiple customers quickly</td></tr>
+        <tr><td>8</td><td>Consistency</td><td>Sold-out reflects within 5s</td><td>Double reservations damage vendor trust</td></tr>
+        <tr><td>9</td><td>Onboarding</td><td>First listing within 5 mins</td><td>Friction in onboarding kills supply side growth</td></tr>
+      </table>
+
+      <h3>Why 99.9% and not 99.99%?</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>99.99% means only 52 minutes of downtime per year. That's what Google and AWS promise. For a food surplus app that mainly runs during lunch and dinner hours, that's overkill and extremely hard to achieve. 99.9% allows about 8.7 hours per year which is still very good. The architecture is designed to scale toward higher availability as the system grows.</p>
+        </div>
+      </div>
+
+      <h3>Architecturally Significant Requirements</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Three NFRs directly shape how we built the system:</p>
+          <p><strong>Real-time updates (NFR-4)</strong> drives the decision to use WebSockets instead of polling.</p>
+          <p><strong>Availability (NFR-2)</strong> drives stateless servers, health checks, and auto-restart.</p>
+          <p><strong>Scalability (NFR-3)</strong> drives JWT auth (no server sessions), horizontal scaling, and DB read replicas.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SUBSYSTEMS ============ -->
+    <div class="section" id="sec-subsystems">
+      <h2>Subsystems</h2>
+      <p class="subtitle">7 modules, each with a clear job</p>
+
+      <div class="card">
+        <div class="card-title"><span class="badge badge-blue">1</span> User Management</div>
+        <div class="card-body">Signup, login, profiles, and role management for vendors and consumers. Handles the guardrails like phone verification and business name requirement for vendors.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-blue">2</span> Listing Management</div>
+        <div class="card-body">Creating, updating, and closing food listings with price, quantity, and pickup window. Enforces listing quality rules (all required fields must be present).</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-blue">3</span> Discovery</div>
+        <div class="card-body">Map and search experience for consumers. Filtering listings by distance, cuisine, and price. This is the consumer-facing side of listings.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-blue">4</span> Reservation & QR</div>
+        <div class="card-body">Reserving food, looking up orders via static consumer QR code, and confirming pickup through vendor scan. Uses database transactions with row locking to prevent double-booking.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-blue">5</span> Payments</div>
+        <div class="card-body">Online payment processing via PhonePe Business. Handles transaction records, refunds, and vendor settlement tracking. Listens to reservation events automatically.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-blue">6</span> Notifications</div>
+        <div class="card-body">Push alerts for new deals, order confirmations, and pickup status. <strong>Intentionally standalone</strong> so any future module can trigger notifications without touching other parts.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-blue">7</span> Vendor Dashboard</div>
+        <div class="card-body">Analytics for vendors: food items saved, revenue recovered, pending pickups, and customer ratings.</div>
+      </div>
+
+      <h3>Why is Notifications a separate subsystem?</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Initially we thought about merging it with Listing Management since new-listing notifications were the main use case. But then we realized that notifications need to come from reservations (order status), payments (refund confirmations), and potentially the dashboard (weekly summaries). Keeping it standalone means any module can plug into it without changing other parts. This was a deliberate design decision.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ STAKEHOLDERS ============ -->
+    <div class="section" id="sec-stakeholders">
+      <h2>Stakeholder Identification (IEEE 42010)</h2>
+      <p class="subtitle">who cares about the system and what they worry about</p>
+
+      <table class="info-table">
+        <tr><th>Stakeholder</th><th>Concerns</th><th>Viewpoint</th><th>Views (Subsystems)</th></tr>
+        <tr><td>Vendor</td><td>Can I list food quickly? Will I get paid? Can I trust the platform?</td><td>Operational</td><td>Listing Mgmt, Payments, Dashboard</td></tr>
+        <tr><td>Consumer</td><td>Can I find food nearby fast? Is payment safe? Will the food be there?</td><td>Functional</td><td>Discovery, Reservation, Payments</td></tr>
+        <tr><td>Developer</td><td>Is it easy to maintain? Can I add features without breaking things?</td><td>Implementation</td><td>All subsystems, deployment</td></tr>
+        <tr><td>Platform Admin</td><td>Are vendors behaving? Any fraud or abuse?</td><td>Compliance</td><td>User Mgmt, Notifications, flagging</td></tr>
+        <tr><td>Payment Gateway</td><td>Are API calls well formed? Proper error handling?</td><td>Integration</td><td>Payments subsystem</td></tr>
+      </table>
+
+      <h3>Key Point: Self-Serve Onboarding</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Vendor onboarding is self-serve with automated guardrails. No manual admin approval. This was a product decision driven by our goal of getting as many vendors quickly. The admin role exists but is reactive (reviewing flagged vendors and reported listings) rather than approving every signup.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ ADRs ============ -->
+    <div class="section" id="sec-adrs">
+      <h2>Architecture Decision Records</h2>
+      <p class="subtitle">5 big decisions, each with clear reasoning</p>
+
+      <div class="accordion" onclick="this.classList.toggle('open')">
+        <div class="accordion-header">
+          <span><span class="badge badge-green">ADR 1</span> &nbsp;Modular Monolith over Microservices</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-content">
+          <p><strong>Context:</strong> Team of 5 starting from scratch. Need to move fast.</p>
+          <p><strong>Decision:</strong> Build as a modular monolith. Each subsystem is a well-defined internal module with clear interfaces. Modules don't directly access each other's data.</p>
+          <p><strong>Why not microservices?</strong> Way too much infrastructure for 5 people. We'd need 7+ services, 7+ databases, a message broker, API gateway, service mesh. Overkill for 5000 users.</p>
+          <p><strong>Trade-off:</strong> Single point of failure, but mitigated by health checks and multiple instances. Scaling means scaling the whole app, not individual pieces.</p>
+          <p><strong>Key argument:</strong> Clean module boundaries mean we CAN extract services later if needed. We get the discipline of microservices without the operational cost.</p>
+        </div>
+      </div>
+
+      <div class="accordion" onclick="this.classList.toggle('open')">
+        <div class="accordion-header">
+          <span><span class="badge badge-blue">ADR 2</span> &nbsp;WebSockets for Real-Time Updates</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-content">
+          <p><strong>Context:</strong> New listings must appear within 30 seconds.</p>
+          <p><strong>Decision:</strong> Use WebSockets (socket.io) to push updates to connected consumers.</p>
+          <p><strong>Why not polling?</strong> Polling every few seconds wastes bandwidth and doesn't guarantee 30-second freshness. WebSockets push instantly.</p>
+          <p><strong>Trade-off:</strong> Persistent connections need management during peak hours. But socket.io handles reconnection and rooms out of the box.</p>
+        </div>
+      </div>
+
+      <div class="accordion" onclick="this.classList.toggle('open')">
+        <div class="accordion-header">
+          <span><span class="badge badge-amber">ADR 3</span> &nbsp;Self-Serve Vendor Onboarding with Guardrails</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-content">
+          <p><strong>Context:</strong> Need maximum vendor signups in the early phase.</p>
+          <p><strong>Decision:</strong> Self-serve onboarding. Guardrails include phone OTP, business name required, listing must have all fields. Low-rated vendors get auto-flagged.</p>
+          <p><strong>Why not manual approval?</strong> Creates a bottleneck. Every vendor waits for admin. Kills the onboarding NFR (5 minutes).</p>
+          <p><strong>Trade-off:</strong> Some bad actors may get through initially, but the flagging system limits damage.</p>
+        </div>
+      </div>
+
+      <div class="accordion" onclick="this.classList.toggle('open')">
+        <div class="accordion-header">
+          <span><span class="badge badge-red">ADR 4</span> &nbsp;Online-Only Payments via PhonePe</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-content">
+          <p><strong>Context:</strong> Need to protect vendors from no-shows.</p>
+          <p><strong>Decision:</strong> All payments online. Consumer pays at reservation. Vendors get payouts every 2 weeks. No COD initially.</p>
+          <p><strong>Why no COD?</strong> If consumers can book without paying, they might never show up. This destroys vendor trust. Online-only means the consumer has skin in the game.</p>
+          <p><strong>Trade-off:</strong> Some consumers without UPI access are excluded. But UPI penetration in India is very high, so this is acceptable.</p>
+        </div>
+      </div>
+
+      <div class="accordion" onclick="this.classList.toggle('open')">
+        <div class="accordion-header">
+          <span><span class="badge badge-purple">ADR 5</span> &nbsp;Static Consumer QR Code</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-content">
+          <p><strong>Context:</strong> Need a way for vendors to verify pickup. Originally we planned per-reservation signed QR codes.</p>
+          <p><strong>Decision:</strong> Each consumer gets one permanent QR tied to their account. Vendor scans it, system shows all active orders from that consumer. Vendor picks which order to fulfill.</p>
+          <p><strong>Why not per-reservation QR?</strong> Unnecessary complexity. Crypto signing, expiry handling, generation on every reservation. The static approach is simpler and works just as well.</p>
+          <p><strong>Trade-off:</strong> If someone's QR leaks, no harm. It only shows orders to the specific vendor scanning it. And it requires a paid reservation to be useful.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ TACTICS ============ -->
+    <div class="section" id="sec-tactics">
+      <h2>Architectural Tactics and Patterns</h2>
+      <p class="subtitle">how we achieve the NFRs in practice</p>
+
+      <h3>5 Tactics</h3>
+
+      <div class="card">
+        <div class="card-title"><span class="badge badge-green">Scalability</span> Horizontal Scaling</div>
+        <div class="card-body">Multiple monolith instances behind a load balancer. Stateless servers (JWT auth, no sessions) so any instance handles any request. Add instances during peak hours.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-blue">Performance</span> Database Read Replicas</div>
+        <div class="card-body">Read-heavy ops (browsing, search) go to read replicas. Writes (new listings, reservations) go to the primary. Most traffic is consumers browsing, not vendors posting.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-red">Availability</span> Health Checks + Auto-Restart</div>
+        <div class="card-body">Each instance has a <code>/health</code> endpoint. Load balancer stops routing to dead instances. New ones spin up automatically. This is how we hit 99.9%.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-amber">Real-time</span> WebSocket with Geo-Filtering</div>
+        <div class="card-body">New listings only push to consumers within a radius of the vendor. Not broadcast to everyone. Reduces unnecessary traffic as user base grows.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-purple">Security</span> Rate Limiting on Vendor APIs</div>
+        <div class="card-body">Vendor endpoints are rate-limited. No one can spam 100 listings in a minute. Protects platform quality and server resources.</div>
+      </div>
+
+      <h3>2 Design Patterns</h3>
+
+      <div class="card">
+        <div class="card-title">Observer Pattern (Event Bus)</div>
+        <div class="card-body">
+          <p>When a listing is created, the Listing module doesn't call Notifications, Discovery, or Dashboard directly. It just emits a <code>listing:created</code> event. All interested modules listen and react independently.</p>
+          <p style="margin-top:8px"><strong>Where in code:</strong> <code>server/shared/events/eventBus.js</code></p>
+          <p><strong>Why it matters:</strong> Adding a new feature (like email notifications) is just adding a new listener. Zero changes to existing modules.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Repository Pattern (Data Access)</div>
+        <div class="card-body">
+          <p>Each module has its own Repository file (<code>userRepo.js</code>, <code>listingRepo.js</code>, etc.) that handles all database queries. No module directly accesses another module's tables.</p>
+          <p style="margin-top:8px"><strong>Where in code:</strong> Each <code>server/modules/*/</code> folder has a <code>*Repo.js</code> file.</p>
+          <p><strong>Why it matters:</strong> If we switch databases for a specific module later, we only change that one repo file. Also makes testing easier since we can mock the repo.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ DEMO FLOW ============ -->
+    <div class="section" id="sec-demoflow">
+      <h2>Demo Flow</h2>
+      <p class="subtitle">step by step guide to demo the app during evaluation</p>
+
+      <div class="card" style="background: #FEF3C7; border-color: #F59E0B;">
+        <div class="card-body">
+          <strong>Before the demo:</strong> Make sure Docker is running. Run <code>docker-compose up --build</code> and then <code>docker-compose exec server node seed.js</code> to load demo data. The app will be at <code>http://localhost:3000</code>.
+        </div>
+      </div>
+
+      <h3>Step 1: Show Vendor Flow</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Login as vendor: <code>ravi@demo.com</code> / <code>password123</code></p>
+          <p>Show the <strong>dashboard</strong> with stats (active listings, completed orders, food saved).</p>
+          <p>Go to <strong>my listings</strong> to see existing food items.</p>
+          <p>Click <strong>post new listing</strong> and create one. Show the guardrails (all fields required, discounted price must be less than original).</p>
+        </div>
+      </div>
+
+      <h3>Step 2: Show Consumer Flow</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Logout. Login as consumer: <code>priya@demo.com</code> / <code>password123</code></p>
+          <p>Go to <strong>browse</strong>. Show listings with prices and pickup windows.</p>
+          <p>Click <strong>reserve now</strong> on an item. Show the success message.</p>
+          <p>Go to <strong>my orders</strong> to see the reservation.</p>
+          <p>Go to <strong>my qr</strong> to show the static QR code.</p>
+        </div>
+      </div>
+
+      <h3>Step 3: Show Pickup Flow</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Logout. Login as vendor again.</p>
+          <p>Go to <strong>scan qr</strong>. Paste the consumer's QR token (from the seed script output).</p>
+          <p>Show the consumer's active orders appearing.</p>
+          <p>Click <strong>confirm pickup</strong>.</p>
+          <p>Go to <strong>dashboard</strong> to show updated stats.</p>
+        </div>
+      </div>
+
+      <h3>Step 4: Talk About Architecture</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Show the <code>server/modules/</code> folder structure. Point out how each module has its own repo, controller, and routes.</p>
+          <p>Open <code>server/shared/events/eventBus.js</code> and explain the Observer pattern.</p>
+          <p>Open <code>server/modules/reservations/reservationRepo.js</code> and show the transaction with <code>SELECT FOR UPDATE</code> that prevents double-booking.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CODE STRUCTURE ============ -->
+    <div class="section" id="sec-codestructure">
+      <h2>Code Structure</h2>
+      <p class="subtitle">where everything lives in the codebase</p>
+
+      <pre>foodsave/
+├── client/                    # nextjs frontend
+│   └── src/
+│       ├── app/               # pages (home, browse, vendor/, consumer/)
+│       ├── components/        # navbar
+│       ├── contexts/          # auth state management
+│       └── lib/               # api helper
+├── server/
+│   ├── modules/               # the 7 subsystems
+│   │   ├── users/             # userRepo.js, userController.js, routes.js
+│   │   ├── listings/          # listingRepo.js, listingController.js, routes.js
+│   │   ├── discovery/         # discoveryRepo.js, discoveryController.js, routes.js
+│   │   ├── reservations/      # reservationRepo.js, reservationController.js, routes.js
+│   │   ├── payments/          # paymentRepo.js, paymentController.js, routes.js
+│   │   ├── notifications/     # index.js (repo + controller + listeners), routes.js
+│   │   └── dashboard/         # dashboardController.js, routes.js
+│   ├── shared/
+│   │   ├── db/                # connection pool + migrations
+│   │   ├── events/            # eventBus.js (observer pattern)
+│   │   └── middleware/        # jwt auth + role authorization
+│   ├── index.js               # main entry, wires everything together
+│   └── seed.js                # demo data
+├── docker-compose.yml
+└── README.md</pre>
+
+      <h3>How Modules Communicate</h3>
+      <div class="card">
+        <div class="card-body">
+          <p><strong>Rule:</strong> Modules never import another module's repository directly (with one documented exception in reservations).</p>
+          <p><strong>Events:</strong> When something happens (listing created, reservation made, order fulfilled), the module emits an event. Other modules listen and react.</p>
+          <p><strong>Example flow:</strong> Consumer reserves food → Reservation module emits <code>reservation:created</code> → Payment module hears it and creates a payment record → Notification module hears it and notifies the vendor</p>
+        </div>
+      </div>
+
+      <h3>The One Exception</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>The Reservation controller imports <code>listingRepo</code> (to check availability) and <code>userRepo</code> (to look up consumers by QR token). This is documented in the code with a comment explaining that in a future microservices setup, these would become API calls instead of direct imports.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ ANALYSIS ============ -->
+    <div class="section" id="sec-analysis">
+      <h2>Architecture Analysis</h2>
+      <p class="subtitle">monolith vs microservices with actual numbers</p>
+
+      <h3>Response Time Comparison</h3>
+      <p>Tracing the "reserve food" flow:</p>
+
+      <table class="info-table">
+        <tr><th>Step</th><th>Monolith</th><th>Microservices</th></tr>
+        <tr><td>Check listing availability</td><td>~5-10ms (in-process call)</td><td>~15-30ms (HTTP to Listing service)</td></tr>
+        <tr><td>Create reservation</td><td>~10-20ms (single DB transaction)</td><td>~10-20ms (own DB)</td></tr>
+        <tr><td>Emit/publish event</td><td>~0ms (in-memory)</td><td>~5-15ms (message broker)</td></tr>
+        <tr><td>Process payment</td><td>~5-10ms (listener)</td><td>~10-20ms (separate service)</td></tr>
+        <tr><td>Send notification</td><td>~5-10ms (listener)</td><td>~10-20ms (separate service)</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>25-50ms</strong></td><td><strong>55-115ms</strong></td></tr>
+      </table>
+
+      <p><strong>Why:</strong> In-process function calls and in-memory events have near-zero overhead vs network calls between services.</p>
+
+      <h3>Scalability Comparison</h3>
+      <table class="info-table">
+        <tr><th>Aspect</th><th>Monolith (3 instances)</th><th>Microservices (7 services)</th></tr>
+        <tr><td>Containers</td><td>3 app + 2 DB</td><td>7+ services + 7+ DBs + broker + gateway</td></tr>
+        <tr><td>Deploy complexity</td><td>One artifact</td><td>7+ independent deploys</td></tr>
+        <tr><td>Team needed</td><td>1-2 devs</td><td>3-5 devs minimum</td></tr>
+        <tr><td>Infra cost</td><td>2-3 VMs</td><td>8-12 VMs</td></tr>
+      </table>
+
+      <h3>Bottom Line</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>At 5000 users, monolith wins on simplicity, speed, and cost. Microservices win when you have 500K+ users and need to scale specific services independently. Our clean module boundaries make migration possible later without a rewrite.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Q&A ============ -->
+    <div class="section" id="sec-qa">
+      <h2>Likely Evaluation Questions</h2>
+      <p class="subtitle">practice these before the evaluation</p>
+
+      <input type="text" class="search-box" placeholder="search questions..." oninput="filterQA(this.value)">
+
+      <div id="qa-list">
+        <div class="qa">
+          <div class="qa-q">Why did you choose a monolith instead of microservices?</div>
+          <div class="qa-a">We are a team of 5 building from scratch. Microservices would need 7+ services, 7+ databases, a message broker, API gateway, and a lot more infrastructure. That is overkill for 5000 users. We chose a modular monolith with clean boundaries so we can extract services later if needed. It gives us the discipline of microservices without the operational cost.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">How do you prevent double-booking?</div>
+          <div class="qa-a">The reservation flow uses a PostgreSQL transaction with <code>SELECT FOR UPDATE</code> row-level locking. When two consumers try to reserve the last item at the same time, the database locks the listing row. Only one transaction succeeds, the other gets rolled back with a clear error message. This happens in <code>reservationRepo.js</code>.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">Why online-only payments? Why no cash on delivery?</div>
+          <div class="qa-a">Our primary goal is protecting vendors from no-shows. If consumers can book without paying, they might never come to pick up. This wastes vendor time and food. Online payment means the consumer has already committed. We can add COD later once vendor trust is established.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">Why is the QR code static and not generated per reservation?</div>
+          <div class="qa-a">Per-reservation QR codes add complexity like crypto signing, expiry, and generation on every booking. A static QR tied to the consumer's account is simpler. When the vendor scans it, the system just looks up active orders between that consumer and vendor. If there are multiple, the vendor picks which one. Simple, reliable, and no security risk since the QR is useless without a paid reservation.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">Explain the Observer pattern in your system.</div>
+          <div class="qa-a">We have an event bus (<code>eventBus.js</code>) that implements the observer pattern. When something important happens, like a listing is created or a reservation is made, the module emits an event instead of calling other modules directly. Payments, Notifications, and Dashboard listen for these events and react independently. This keeps modules loosely coupled. Adding a new feature like email notifications is just adding a new listener, zero changes to existing code.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">What is the Repository pattern and why did you use it?</div>
+          <div class="qa-a">Each module has its own repository file that handles all database queries for that module's tables. No module writes raw SQL outside its repo. This means if we switch databases for one module later, we only change that repo file. It also makes testing easier since we can mock the repo. And it enforces our rule that modules don't access each other's data directly.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">What happens if the server crashes during a reservation?</div>
+          <div class="qa-a">The reservation uses a database transaction. If the server crashes mid-transaction, PostgreSQL automatically rolls back. The listing quantity stays unchanged, no payment is created, and no partial state is left behind. The consumer just sees an error and can retry.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">How would you scale this beyond 5000 users?</div>
+          <div class="qa-a">First, add more monolith instances behind a load balancer since the app is stateless. Then add PostgreSQL read replicas for the Discovery module's heavy read queries. If specific modules become bottlenecks (say Discovery at 100K users), we can extract that module into its own service since the boundaries are already clean. The event bus would be replaced with a message broker like RabbitMQ for that extracted service.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">Why did you prioritize vendors over consumers?</div>
+          <div class="qa-a">Without vendors listing food, the platform has nothing to offer consumers. It is a supply-driven marketplace. Similar to how Swiggy and Zomato started by onboarding restaurants first before focusing on consumer marketing. Once we have enough supply, consumer growth follows naturally.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">Why Next.js instead of plain React?</div>
+          <div class="qa-a">Next.js gives us file-based routing, server-side rendering, and API route proxying out of the box. With plain React we would need to set up React Router, configure a proxy for the backend API, and handle a lot more boilerplate. Next.js saves time for a prototype.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">How does the notification system work?</div>
+          <div class="qa-a">The Notification module listens for events from the event bus (like <code>reservation:created</code> or <code>listing:created</code>). When it hears an event, it creates a notification record in the database and pushes a real-time alert via WebSocket to the relevant user. Users are organized in socket.io rooms by their user ID so we can target specific users.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">What is IEEE 42010 and how did you apply it?</div>
+          <div class="qa-a">IEEE 42010 is a standard for architecture documentation. It says you should identify stakeholders, their concerns, and the architectural viewpoints that address them. We identified 5 stakeholders: vendors, consumers, developers, platform admin, and payment gateway. Each has specific concerns that map to specific subsystems. For example, vendors care about listing speed, payment reliability, and analytics, which maps to the Listing, Payments, and Dashboard subsystems.</div>
+        </div>
+
+        <div class="qa">
+          <div class="qa-q">What tools did you use to build this?</div>
+          <div class="qa-a">We used Claude (by Anthropic) to help write the prototype code. The team focused on architecture decisions, requirements analysis, design patterns, testing, and the technical report. The code was reviewed, tested, and debugged by the team after generation.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CONTRIBUTIONS ============ -->
+    <div class="section" id="sec-contributions">
+      <h2>Who Did What</h2>
+      <p class="subtitle">know your own contribution well for the evaluation</p>
+
+      <div class="card">
+        <div class="card-body" style="background: #FEF3C7; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+          <strong>Important:</strong> We used Claude to help write the prototype code. The team's work was on architecture, design, requirements, decisions, testing, and the report. Make sure you can explain your part clearly.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Vivek R <span class="badge badge-green">2019112020</span></div>
+        <div class="card-body">Led the architecture discussions. Pushed for the modular monolith approach. Helped define the 7 subsystems and their boundaries. Contributed to ADR 1 (monolith) and ADR 2 (WebSockets). Tested the reservation flow for edge cases like double-booking and race conditions.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Manjri Malhotra <span class="badge badge-blue">2025900015</span></div>
+        <div class="card-body">Drove the requirements gathering and business reasoning behind each NFR. Heavily involved in the IEEE 42010 stakeholder analysis. Suggested keeping Notifications as a standalone subsystem. Worked on the architecture comparison section of the report.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Sai Bharath Besta <span class="badge badge-amber">2025901008</span></div>
+        <div class="card-body">Focused on database schema design and table relationships. Defined repository pattern boundaries. Wrote ADR 3 (self-serve onboarding). Tested the discovery module's distance-based search query.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Sai Vineesh <span class="badge badge-purple">2019112010</span></div>
+        <div class="card-body">Contributed to payment flow design and wrote ADR 4 (online-only payments). Researched PhonePe Business API and settlement cycle. Helped define architectural tactics (read replicas, rate limiting). Tested the end-to-end vendor-to-consumer flow.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Abdul Muqtadir <span class="badge badge-red">2024901004</span></div>
+        <div class="card-body">Researched IEEE 42010 and drafted stakeholder analysis. Worked on ADR 5 (QR code design), originally proposed per-reservation QR before the team simplified it. Defined WebSocket notification architecture. Helped with the scalability analysis.</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// navigation
+document.querySelectorAll('.sidebar a').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const section = link.dataset.section;
+
+    // update active link
+    document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+
+    // show section
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('sec-' + section).classList.add('active');
+
+    // scroll to top on mobile
+    window.scrollTo(0, 0);
+  });
+});
+
+// qa search filter
+function filterQA(query) {
+  const items = document.querySelectorAll('#qa-list .qa');
+  const q = query.toLowerCase().trim();
+
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    if (!q || text.includes(q)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+</script>
+
+</body>
+</html>
